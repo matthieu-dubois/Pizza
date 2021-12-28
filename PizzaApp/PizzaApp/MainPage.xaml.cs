@@ -14,11 +14,15 @@ namespace PizzaApp
     {
         //decommenter pour effectuer du synchrone 
 
-        //enumeration pour le Tri
-
+       //declaration d'une liste d'objet pizza
 
         List<Pizza> pizzas = new List<Pizza>();
 
+        // declaration de la liste de favoris pizza
+
+        List<string> pizzasFav = new List<string>();
+
+        //enumeration pour le Tri
         enum e_tri
         {
             TRI_AUCUN,
@@ -31,8 +35,13 @@ namespace PizzaApp
 
         const string KEY_TRI = "tri";
 
+        const string KEY_FAV = "fav";
+
         public MainPage()
         {
+            //methode chargement de la liste des favoris
+            LoadFavList();
+
             InitializeComponent();
 
 
@@ -127,7 +136,11 @@ namespace PizzaApp
                 DownloadData((pizzas) =>
                 {
                     //listeView.ItemsSource = pizzas;
-                    listeView.ItemsSource = GetPizzasFromTri(tri, pizzas);
+                    //pour le TRI
+                    //listeView.ItemsSource = GetPizzasFromTri(tri, pizzas);
+
+                    
+                    listeView.ItemsSource = GetPizzaCells(GetPizzasFromTri(tri, pizzas), pizzasFav);
                     listeView.IsRefreshing = false;
 
 
@@ -144,8 +157,10 @@ namespace PizzaApp
             DownloadData((pizzas) =>
             {
                 //listeView.ItemsSource = pizzas;
+                //Pour le tri sans favoris
+                //listeView.ItemsSource = GetPizzasFromTri(tri, pizzas);
 
-                listeView.ItemsSource = GetPizzasFromTri(tri, pizzas);
+                listeView.ItemsSource = GetPizzaCells(GetPizzasFromTri(tri, pizzas), pizzasFav);
 
                 listeView.IsVisible = true;
                 WaitLayout.IsVisible = false;
@@ -216,6 +231,19 @@ namespace PizzaApp
         {
             Console.WriteLine("SortButtonClicked");
 
+            //if (tri == e_tri.TRI_AUCUN)
+            //{
+            //    tri = e_tri.TRI_NOM;
+            //}
+            //else if (tri == e_tri.TRI_NOM)
+            //{
+            //    tri = e_tri.TRI_PRIX;
+            //}
+            //else if (tri == e_tri.TRI_PRIX)
+            //{
+            //    tri = e_tri.TRI_AUCUN;
+            //}
+
             if (tri == e_tri.TRI_AUCUN)
             {
                 tri = e_tri.TRI_NOM;
@@ -226,11 +254,19 @@ namespace PizzaApp
             }
             else if (tri == e_tri.TRI_PRIX)
             {
+                tri = e_tri.TRI_FAV;
+            }
+            else if (tri == e_tri.TRI_FAV)
+            {
                 tri = e_tri.TRI_AUCUN;
             }
 
             SortButton.Source = GetImageSourceFromTri(tri);
-            listeView.ItemsSource = GetPizzasFromTri(tri, pizzas);
+
+            //Pour le tri classique sans favoris
+            //listeView.ItemsSource = GetPizzasFromTri(tri, pizzas);
+
+            listeView.ItemsSource = GetPizzaCells(GetPizzasFromTri(tri, pizzas), pizzasFav);
 
             Application.Current.Properties[KEY_TRI] = (int)tri;
             Application.Current.SavePropertiesAsync();
@@ -244,6 +280,8 @@ namespace PizzaApp
                     return "sort_nom.png";
                 case e_tri.TRI_PRIX:
                     return "sort_prix.png";
+                case e_tri.TRI_FAV:
+                    return "sort_fav.png";
 
             }
 
@@ -261,6 +299,8 @@ namespace PizzaApp
             switch (t)
             {
                 case e_tri.TRI_NOM:
+                case e_tri.TRI_FAV:
+
                     {
                         List<Pizza> ret = new List<Pizza>(l);
 
@@ -282,6 +322,76 @@ namespace PizzaApp
             return l;
         }
 
+        // afficher les pizzas qui sont dans la liste favoris
+        private List<PizzaCell> GetPizzaCells(List<Pizza> p, List<string> f)
+        {
+            List<PizzaCell> ret = new List<PizzaCell>();
+
+            if (p == null)
+            {
+                return ret;
+            }
+
+            foreach (Pizza pizza in p)
+            {
+                bool isFav = f.Contains(pizza.Nom);
+
+                if (tri == e_tri.TRI_FAV)
+                {
+                    if (isFav)
+                    {
+                        ret.Add(new PizzaCell { pizza = pizza, isFavorite = isFav, favChangedAction = OnFavPizzaChanged });
+                    }
+                }
+                else
+                {
+                    ret.Add(new PizzaCell { pizza = pizza, isFavorite = isFav, favChangedAction = OnFavPizzaChanged });
+                }
+            }
+
+            return ret;
+        }
+
+        //methode pour les favoris
+        private void OnFavPizzaChanged(PizzaCell pizzaCell)
+        {
+            //pizzasFav
+
+            // Ajouter ou supprimer 
+            // pizzaCell.pizza.nom
+            // pizzaCell.IsFavorite
+
+            bool isInFavList = pizzasFav.Contains(pizzaCell.pizza.Nom);
+
+            if (pizzaCell.isFavorite && !isInFavList)
+            {
+                pizzasFav.Add(pizzaCell.pizza.Nom);
+                SaveFavList();
+            }
+            else if (!pizzaCell.isFavorite && isInFavList)
+            {
+                pizzasFav.Remove(pizzaCell.pizza.Nom);
+                SaveFavList();
+            }
+
+        }
+
+        //Methode pour les favoris
+        private void SaveFavList()
+        {
+            string json = JsonConvert.SerializeObject(pizzasFav);
+            Application.Current.Properties[KEY_FAV] = json;
+            Application.Current.SavePropertiesAsync();
+        }
+
+        private void LoadFavList()
+        {
+            if (Application.Current.Properties.ContainsKey(KEY_FAV))
+            {
+                string json = Application.Current.Properties[KEY_FAV].ToString();
+                pizzasFav = JsonConvert.DeserializeObject<List<string>>(json);
+            }
+        }
 
     }
 }

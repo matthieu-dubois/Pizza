@@ -74,7 +74,7 @@
                             <Image 
                                     Grid.Row="0"
                                     Grid.Column="0"
-                                    Source="{Binding ImageUrl}"
+                                    Source="{Binding pizza.ImageUrl}"
                                     Aspect="AspectFill"
                                     Margin="10,15,5,15"
                                     BackgroundColor="#F0F0F0"/>
@@ -85,8 +85,8 @@
                                     VerticalOptions="Center"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Vertical">
-                                <Label Text="{Binding Titre}" TextColor="Black" FontSize="24"/>
-                                <Label Text="{Binding IngredientsStr}" 
+                                <Label Text="{Binding pizza.Titre}" TextColor="Black" FontSize="24"/>
+                                <Label Text="{Binding pizza.IngredientsStr}" 
                                            TextColor="#555555"
                                            MaxLines="4"
                                            LineBreakMode="TailTruncation"
@@ -94,10 +94,29 @@
 
                             </StackLayout>
 
-                            <Label Grid.Row="0"
+                            <StackLayout Orientation="Vertical"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="End"
+                                         Margin="0,0,10,0"
+                                         Grid.Row="0"
+                                         Grid.Column="2">
+
+
+                                <Label Grid.Row="0"
                                     Grid.Column="2"
                                    VerticalOptions="Center"
-                            Text="{Binding PrixEuros}" TextColor="Black" FontSize="20"/>
+                            Text="{Binding pizza.PrixEuros}" TextColor="Black" FontSize="20"/>
+
+                                <ImageButton HorizontalOptions="End" 
+                                             BackgroundColor="White" 
+                                             Source="{Binding ImageSourceFav}"
+                                             Command="{Binding FavClickCommand}"
+                                             WidthRequest="30"
+                                
+                                />
+
+                            </StackLayout>
+                            
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

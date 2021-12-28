@@ -1066,11 +1066,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\matth\\source\\repos\\PizzaApp\\PizzaApp\\PizzaApp.iOS\\PizzaApp.iOS.csproj",
+      "projectUniqueName": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\Pizza\\PizzaApp\\PizzaApp.iOS\\PizzaApp.iOS.csproj",
       "projectName": "PizzaApp.iOS",
-      "projectPath": "C:\\Users\\matth\\source\\repos\\PizzaApp\\PizzaApp\\PizzaApp.iOS\\PizzaApp.iOS.csproj",
+      "projectPath": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\Pizza\\PizzaApp\\PizzaApp.iOS\\PizzaApp.iOS.csproj",
       "packagesPath": "C:\\Users\\matth\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\matth\\source\\repos\\PizzaApp\\PizzaApp\\PizzaApp.iOS\\obj\\",
+      "outputPath": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\Pizza\\PizzaApp\\PizzaApp.iOS\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
@@ -1093,8 +1093,8 @@
       "frameworks": {
         "xamarinios10": {
           "projectReferences": {
-            "C:\\Users\\matth\\source\\repos\\PizzaApp\\PizzaApp\\PizzaApp\\PizzaApp.csproj": {
-              "projectPath": "C:\\Users\\matth\\source\\repos\\PizzaApp\\PizzaApp\\PizzaApp\\PizzaApp.csproj"
+            "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\Pizza\\PizzaApp\\PizzaApp\\PizzaApp.csproj": {
+              "projectPath": "C:\\Users\\matth\\OneDrive\\Documents\\GitHub\\Pizza\\PizzaApp\\PizzaApp\\PizzaApp.csproj"
             }
           }
         }
